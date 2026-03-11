@@ -10,8 +10,8 @@ from pathlib import Path
 from scipy import signal
 from scipy.optimize import curve_fit
 from scipy.ndimage import maximum_filter1d
-from miniML_functions import (get_event_peak, get_event_baseline, get_event_onset, get_event_risetime, 
-                              get_event_halfdecay_time, get_event_charge, get_event_halfwidth)
+from .miniML_functions import (get_event_peak, get_event_baseline, get_event_onset, get_event_risetime,
+                               get_event_halfdecay_time, get_event_charge, get_event_halfwidth)
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 

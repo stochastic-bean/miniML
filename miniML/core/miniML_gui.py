@@ -15,9 +15,9 @@ from scipy.signal import find_peaks, convolve, resample
 from scipy.signal.windows import hann
 from sklearn.preprocessing import scale, minmax_scale
 import sys
-from miniML import MiniTrace, EventDetection, is_keras_model
-from miniML_settings import MinimlSettings
-import FileImport.HekaReader as heka
+from .miniML import MiniTrace, EventDetection, is_keras_model
+from .miniML_settings import MinimlSettings
+from .FileImport import HekaReader as heka
 from scipy.interpolate import  interp1d
 
 
@@ -34,7 +34,7 @@ def get_available_models() -> list:
     Returns a list of available model paths in the /models folder.
     The list only contains relative paths.
     """
-    models_dir = Path(__file__).parent.parent / 'models'
+    models_dir = Path(__file__).parent.parent.parent / 'models'
     models = [str(p.relative_to(models_dir)) for p in models_dir.glob('**/*.h5') if is_keras_model(str(p))]
 
     return models
@@ -757,7 +757,7 @@ class minimlGuiMain(QMainWindow):
             self.update_main_plot()
 
         n_batches = np.ceil((self.trace.data.shape[0] - self.settings.event_window) / (self.settings.stride * self.settings.batch_size)).astype(int)
-        n_batches = np.floor(n_batches/5)
+        n_batches = int(np.floor(n_batches/5))
         tf.get_logger().setLevel('ERROR')
 
         with pg.ProgressDialog('Detecting events', minimum=0, maximum=n_batches, busyCursor=True, cancelText=None) as self.dlg:
@@ -1042,7 +1042,7 @@ class AboutPanel(QDialog):
         self.layout = QFormLayout(self)
 
         logo = QLabel()
-        logo.setPixmap(QPixmap(str(Path(__file__).parent.parent / 'minML_icon.png')).scaled(QSize(100, 100)))
+        logo.setPixmap(QPixmap(str(Path(__file__).parent.parent.parent / 'minML_icon.png')).scaled(QSize(100, 100)))
         self.layout.addRow(logo)
 
         self.version = QLabel('miniML version 1.0.0')
@@ -2174,10 +2174,10 @@ class CustomViewBox(pg.ViewBox):
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon(str(Path(__file__).parent.parent / 'minML_icon.png')))
+    app.setWindowIcon(QIcon(str(Path(__file__).parent.parent.parent / 'minML_icon.png')))
     main = minimlGuiMain()
     extra = {'density_scale': '-1',}
     app.setStyleSheet(build_stylesheet(theme='light_blue.xml', invert_secondary=False, 
-                                       extra=extra, template='miniml.css.template'))
+                                       extra=extra, template=str(Path(__file__).parent / 'miniml.css.template')))
     main.show()
     sys.exit(app.exec_())

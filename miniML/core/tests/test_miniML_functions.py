@@ -1,10 +1,6 @@
 import unittest
 import numpy as np
-import sys
-sys.path.append('..')  # Adjust path to import miniML_functions
-# Assuming the test file is core/tests/test_miniML_functions.py
-# and miniML_functions.py is in core/
-from miniML_functions import get_event_halfwidth
+from miniML.core.miniML_functions import get_event_halfwidth
 
 class TestGetEventHalfwidth(unittest.TestCase):
     def setUp(self):
