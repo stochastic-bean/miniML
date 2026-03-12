@@ -78,7 +78,8 @@ class MinimlSettings():
 
     @model_path.setter
     def model_path(self, value) -> None:
-        model_path = f'../models/{value}'
+        _here = os.path.dirname(os.path.abspath(__file__))
+        model_path = os.path.join(_here, '..', '..', 'models', value)
         if not os.path.exists(model_path):
             raise FileNotFoundError('Model file not found')
 

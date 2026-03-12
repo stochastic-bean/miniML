@@ -15,6 +15,8 @@ from scipy.signal import find_peaks, convolve, resample
 from scipy.signal.windows import hann
 from sklearn.preprocessing import scale, minmax_scale
 import sys
+import os as _os
+_ICON_DIR = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'icons')
 from .miniML import MiniTrace, EventDetection, is_keras_model
 from .miniML_settings import MinimlSettings
 from .FileImport import HekaReader as heka
@@ -199,49 +201,49 @@ class minimlGuiMain(QMainWindow):
         self.tb = self.addToolBar('Menu')
         self.tb.setMovable(False)
 
-        self.openAction = QAction(QIcon('icons/load_file_24px_blue.svg'), 'Open...', self)
+        self.openAction = QAction(QIcon(_ICON_DIR + '/load_file_24px_blue.svg'), 'Open...', self)
         self.openAction.setShortcut('Ctrl+O')
         self.tb.addAction(self.openAction)
-        self.filterAction = QAction(QIcon('icons/filter_24px_blue.svg'), 'Filter', self)
+        self.filterAction = QAction(QIcon(_ICON_DIR + '/filter_24px_blue.svg'), 'Filter', self)
         self.filterAction.setShortcut('Ctrl+F')
         self.tb.addAction(self.filterAction)
-        self.infoAction = QAction(QIcon('icons/info_24px_blue.svg'), 'Info', self)
+        self.infoAction = QAction(QIcon(_ICON_DIR + '/info_24px_blue.svg'), 'Info', self)
         self.infoAction.setShortcut('Ctrl+I')
         self.tb.addAction(self.infoAction)
-        self.cutAction = QAction(QIcon('icons/content_cut_24px_blue.svg'), 'Cut trace', self)
+        self.cutAction = QAction(QIcon(_ICON_DIR + '/content_cut_24px_blue.svg'), 'Cut trace', self)
         self.cutAction.setShortcut('Ctrl+X')
         self.tb.addAction(self.cutAction)
-        self.resetAction = QAction(QIcon('icons/restore_page_24px_blue.svg'), 'Reload', self)
+        self.resetAction = QAction(QIcon(_ICON_DIR + '/restore_page_24px_blue.svg'), 'Reload', self)
         self.resetAction.setShortcut('Ctrl+R')
         self.tb.addAction(self.resetAction)
-        self.analyseAction = QAction(QIcon('icons/rocket_launch_24px_blue.svg'), 'Analyse', self)
+        self.analyseAction = QAction(QIcon(_ICON_DIR + '/rocket_launch_24px_blue.svg'), 'Analyse', self)
         self.analyseAction.setShortcut('Ctrl+A')
         self.tb.addAction(self.analyseAction)
-        self.predictionAction = QAction(QIcon('icons/ssid_chart_24px_blue.svg'), 'Prediction', self)
+        self.predictionAction = QAction(QIcon(_ICON_DIR + '/ssid_chart_24px_blue.svg'), 'Prediction', self)
         self.tb.addAction(self.predictionAction)
-        self.summaryAction = QAction(QIcon('icons/functions_24px_blue.svg'), 'Summary', self)
+        self.summaryAction = QAction(QIcon(_ICON_DIR + '/functions_24px_blue.svg'), 'Summary', self)
         self.tb.addAction(self.summaryAction)
-        self.plotAction = QAction(QIcon('icons/insert_chart_24px_blue.svg'), 'Plot', self)
+        self.plotAction = QAction(QIcon(_ICON_DIR + '/insert_chart_24px_blue.svg'), 'Plot', self)
         self.tb.addAction(self.plotAction)
-        self.tableAction = QAction(QIcon('icons/table_24px_blue.svg'), 'Table', self)
+        self.tableAction = QAction(QIcon(_ICON_DIR + '/table_24px_blue.svg'), 'Table', self)
         self.tb.addAction(self.tableAction)
-        self.eventViewerAction = QAction(QIcon('icons/event_mode_24px_blue.svg'), 'Event Viewer', self)
+        self.eventViewerAction = QAction(QIcon(_ICON_DIR + '/event_mode_24px_blue.svg'), 'Event Viewer', self)
         self.eventViewerAction.setShortcut('Ctrl+E')
         self.tb.addAction(self.eventViewerAction)
-        self.saveAction = QAction(QIcon('icons/save_24px_blue.svg'), 'Save results', self)
+        self.saveAction = QAction(QIcon(_ICON_DIR + '/save_24px_blue.svg'), 'Save results', self)
         self.saveAction.setShortcut('Ctrl+S')
         self.tb.addAction(self.saveAction)
-        self.helperAction = QAction(QIcon('icons/settings_suggest_24px_blue.svg'), 'Settings helper', self)
+        self.helperAction = QAction(QIcon(_ICON_DIR + '/settings_suggest_24px_blue.svg'), 'Settings helper', self)
         self.helperAction.setShortcut('Ctrl+H')
         self.tb.addAction(self.helperAction)
-        self.settingsAction = QAction(QIcon('icons/settings_24px_blue.svg'), 'Settings', self)
+        self.settingsAction = QAction(QIcon(_ICON_DIR + '/settings_24px_blue.svg'), 'Settings', self)
         self.settingsAction.setShortcut('Ctrl+P')
         self.tb.addAction(self.settingsAction)
 
         # qActions for MenuBar
-        self.closeAction = QAction(QIcon('icons/cancel_24px_blue.svg'), 'Close Window', self)
+        self.closeAction = QAction(QIcon(_ICON_DIR + '/cancel_24px_blue.svg'), 'Close Window', self)
         self.closeAction.setShortcut('Ctrl+W')
-        self.aboutAction = QAction(QIcon('icons/info_24px_blue.svg'), 'About', self)
+        self.aboutAction = QAction(QIcon(_ICON_DIR + '/info_24px_blue.svg'), 'About', self)
         self.aboutAction.setShortcut('Ctrl+H')
         
 
@@ -1227,27 +1229,27 @@ class CutPanel(QDialog):
         self.toggle_label1.setStyleSheet("font-weight: bold;")
         self.switch = QCheckBox()
         self.switch.setChecked(False)
-        self.switch.setStyleSheet('''
-            QCheckBox::indicator:unchecked {
-                image: url(icons/toggle_off_24px.svg);
+        self.switch.setStyleSheet(f'''
+            QCheckBox::indicator:unchecked {{
+                image: url({_ICON_DIR}/toggle_off_24px.svg);
                 width: 48;
                 height: 48;
-            }
-            QCheckBox::indicator:checked {
-                image: url(icons/toggle_on_24px.svg);
+            }}
+            QCheckBox::indicator:checked {{
+                image: url({_ICON_DIR}/toggle_on_24px.svg);
                 width: 48;
                 height: 48;
-            }
+            }}
         ''')
         self.switch.stateChanged.connect(toggle_region_brush)
 
         lower_layout = QHBoxLayout()
 
         cursor1_icon = QLabel()
-        cursor1_icon.setPixmap(QPixmap('icons/first_page_24dp.svg'))
+        cursor1_icon.setPixmap(QPixmap(_ICON_DIR + '/first_page_24dp.svg'))
         cursor1_icon.setFixedSize(36, 36)
         cursor2_icon = QLabel()
-        cursor2_icon.setPixmap(QPixmap('icons/last_page_24dp.svg'))
+        cursor2_icon.setPixmap(QPixmap(_ICON_DIR + '/last_page_24dp.svg'))
         cursor2_icon.setFixedSize(36, 36)
         lower_layout.addWidget(cursor1_icon)
         lower_layout.addWidget(start_label)
@@ -1818,20 +1820,20 @@ class EventViewer(QDialog):
 
         self.layout.addWidget(self.toolbar, 0, 0, 1, 3)
 
-        self.firstAction = QAction(QIcon('icons/first_page_24px_blue.svg'), 'First event', self.toolbar)
+        self.firstAction = QAction(QIcon(_ICON_DIR + '/first_page_24px_blue.svg'), 'First event', self.toolbar)
         self.toolbar.addAction(self.firstAction)
         self.firstAction.triggered.connect(self.first_event)
-        self.beforeAction = QAction(QIcon('icons/navigate_before_24px_blue.svg'), 'Previous', self.toolbar)
+        self.beforeAction = QAction(QIcon(_ICON_DIR + '/navigate_before_24px_blue.svg'), 'Previous', self.toolbar)
         self.toolbar.addAction(self.beforeAction)
         self.beforeAction.triggered.connect(self.previous)
-        self.nextAction = QAction(QIcon('icons/navigate_next_24px_blue.svg'), 'Next', self.toolbar)
+        self.nextAction = QAction(QIcon(_ICON_DIR + '/navigate_next_24px_blue.svg'), 'Next', self.toolbar)
         self.toolbar.addAction(self.nextAction)
         self.nextAction.triggered.connect(self.next)
         self.toolbar.addSeparator()
-        self.deleteAction = QAction(QIcon('icons/clear_24px_blue.svg'), 'Delete event', self.toolbar)
+        self.deleteAction = QAction(QIcon(_ICON_DIR + '/clear_24px_blue.svg'), 'Delete event', self.toolbar)
         self.toolbar.addAction(self.deleteAction)
         self.deleteAction.triggered.connect(self.delete_event)
-        self.excludeAction = QAction(QIcon('icons/hide_image_24px_blue.svg'), 'Exclude from average', self.toolbar)
+        self.excludeAction = QAction(QIcon(_ICON_DIR + '/hide_image_24px_blue.svg'), 'Exclude from average', self.toolbar)
         self.toolbar.addAction(self.excludeAction)
         self.excludeAction.triggered.connect(self.exclude_event)
 
