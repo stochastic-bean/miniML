@@ -359,6 +359,25 @@ class MiniTrace():
         return MiniTrace(detrended, self.sampling, y_unit=self.y_unit, filename=self.filename)
 
 
+    def rolling_median_detrend(self, window_s: float=1.0) -> 'MiniTrace':
+        ''' Detrend by subtracting a rolling median baseline.
+
+        Parameters
+        ----------
+        window_s: float, default=1.0
+            Window size in seconds for the rolling median.
+
+        Returns
+        -------
+        MiniTrace
+            The detrended MiniTrace object.
+        '''
+        import pandas as pd
+        window_samples = max(1, int(round(window_s / self.sampling)))
+        baseline = pd.Series(self.data).rolling(window=window_samples, center=True, min_periods=1).median().to_numpy()
+        return MiniTrace(self.data - baseline, self.sampling, y_unit=self.y_unit, filename=self.filename)
+
+
     def filter(self, line_freq: float=None, width: float=None, highpass: float=None, lowpass: float=None, order: int=4,
                savgol: float=None, hann: int=None) -> MiniTrace:
         ''' Filters trace with a combination of line frequency, high- and lowpass filters.

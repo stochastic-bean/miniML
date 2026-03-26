@@ -1323,7 +1323,10 @@ class FilterPanel(QDialog):
 
             self.filtered_trace = parent.trace
             if self.detrend.isChecked():
-                self.filtered_trace = self.filtered_trace.detrend(num_segments = int(self.num_segments.text()))
+                if self.detrend_method.currentIndex() == 0:
+                    self.filtered_trace = self.filtered_trace.detrend(num_segments=int(self.num_segments.text()))
+                else:
+                    self.filtered_trace = self.filtered_trace.rolling_median_detrend(window_s=float(self.median_window.text()))
             if self.highpass.isChecked():
                 self.filtered_trace = self.filtered_trace.filter(highpass=float(self.high.text()), order=int(self.order.text()))
             if self.line_noise.isChecked():
@@ -1343,8 +1346,21 @@ class FilterPanel(QDialog):
 
         self.detrend = QCheckBox('')
         self.detrend.stateChanged.connect(filter_toggled)
+        self.detrend_method = QComboBox()
+        self.detrend_method.addItems(['Segmented linear', 'Rolling median'])
+        self.detrend_method.setFixedWidth(200)
+        self.detrend_method.currentIndexChanged.connect(lambda: (
+            self.num_segments.setEnabled(self.detrend_method.currentIndex() == 0),
+            self.median_window.setEnabled(self.detrend_method.currentIndex() == 1),
+            filter_toggled()
+        ))
         self.num_segments = QLineEdit('1')
         self.num_segments.setValidator(QIntValidator(1,99))
+        self.num_segments.editingFinished.connect(filter_toggled)
+        self.median_window = QLineEdit('1.0')
+        self.median_window.setValidator(QDoubleValidator(0.001, 9999.9, 3))
+        self.median_window.setEnabled(False)
+        self.median_window.editingFinished.connect(filter_toggled)
         self.highpass = QCheckBox('')
         self.highpass.stateChanged.connect(filter_toggled)
         self.high = QLineEdit('0.5')
@@ -1378,7 +1394,9 @@ class FilterPanel(QDialog):
 
         controls1 = QFormLayout()
         controls1.addRow('Detrend data', self.detrend)
+        controls1.addRow('Detrend method', self.detrend_method)
         controls1.addRow('Number of segments', self.num_segments)
+        controls1.addRow('Median window (s)', self.median_window)
         controls1.addRow('High-pass filter', self.highpass)
         controls1.addRow('High-pass (Hz)', self.high)
         controls1.addRow('Line noise filter', self.line_noise)
